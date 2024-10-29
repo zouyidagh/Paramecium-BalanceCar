@@ -38,8 +38,25 @@
                   },
                   {
                     "path": "Core/Src/stm32f1xx_hal_msp.c"
+                  },
+                  {
+                    "path": "Core/Src/i2c.c"
                   }
                 ],
+                "folders": []
+              },
+              {
+                "name": "Hardware",
+                "files": [
+                  {
+                    "path": "Hardware/src/OLED.c"
+                  }
+                ],
+                "folders": []
+              },
+              {
+                "name": "System",
+                "files": [],
                 "folders": []
               }
             ]
@@ -91,6 +108,9 @@
               },
               {
                 "path": "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c"
+              },
+              {
+                "path": "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c"
               }
             ],
             "folders": []
@@ -181,7 +201,9 @@
           "Drivers/CMSIS/Device/ST/STM32F1xx/Include",
           "Drivers/CMSIS/Include",
           ".cmsis/include",
-          "MDK-ARM/RTE/_Paramecium-BalanceCar"
+          "MDK-ARM/RTE/_Paramecium-BalanceCar",
+          "Hardware/inc",
+          "System/inc"
         ],
         "libList": [],
         "defineList": [
