@@ -1,72 +1,9 @@
-#include "stm32f1xx_hal.h"
+#include "main.h"
+#include "i2c.h"
+#include "gpio.h"
 #include "OLED_Font.h"
 #include <stdio.h>
 #include <stdarg.h>
-
-
-/*引脚配置*/
-#define OLED_W_SCL(x)		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, (GPIO_PinState)(x))
-#define OLED_W_SDA(x)		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, (GPIO_PinState)(x))
-
-/*引脚初始化*/
-void OLED_I2C_Init(void)
-{
-	__HAL_RCC_GPIOB_CLK_ENABLE();
-	
-	GPIO_InitTypeDef GPIO_InitStructure;
-	GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_OD;
-	GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_HIGH;
-	GPIO_InitStructure.Pin = GPIO_PIN_12;
-	HAL_GPIO_Init(GPIOB, &GPIO_InitStructure);
-	GPIO_InitStructure.Pin = GPIO_PIN_13;
-	HAL_GPIO_Init(GPIOB, &GPIO_InitStructure);
-	
-	OLED_W_SCL(GPIO_PIN_SET);
-	OLED_W_SDA(GPIO_PIN_SET);
-}
-
-/**
-  * @brief  I2C开始
-  * @param  无
-  * @retval 无
-  */
-void OLED_I2C_Start(void)
-{
-	OLED_W_SDA(GPIO_PIN_SET);
-	OLED_W_SCL(GPIO_PIN_SET);
-	OLED_W_SDA(GPIO_PIN_RESET);
-	OLED_W_SCL(GPIO_PIN_RESET);
-}
-
-/**
-  * @brief  I2C停止
-  * @param  无
-  * @retval 无
-  */
-void OLED_I2C_Stop(void)
-{
-	OLED_W_SDA(GPIO_PIN_RESET);
-	OLED_W_SCL(GPIO_PIN_SET);
-	OLED_W_SDA(GPIO_PIN_SET);
-}
-
-/**
-  * @brief  I2C发送一个字节
-  * @param  Byte 要发送的一个字节
-  * @retval 无
-  */
-void OLED_I2C_SendByte(uint8_t Byte)
-{
-	uint8_t i;
-	for (i = 0; i < 8; i++)
-	{
-		OLED_W_SDA(Byte & (0x80 >> i));
-		OLED_W_SCL(GPIO_PIN_SET);
-		OLED_W_SCL(GPIO_PIN_RESET);
-	}
-	OLED_W_SCL(GPIO_PIN_SET);	//额外的一个时钟，不处理应答信号
-	OLED_W_SCL(GPIO_PIN_RESET);
-}
 
 /**
   * @brief  OLED写命令
@@ -75,11 +12,7 @@ void OLED_I2C_SendByte(uint8_t Byte)
   */
 void OLED_WriteCommand(uint8_t Command)
 {
-	OLED_I2C_Start();
-	OLED_I2C_SendByte(0x78);		//从机地址
-	OLED_I2C_SendByte(0x00);		//写命令
-	OLED_I2C_SendByte(Command); 
-	OLED_I2C_Stop();
+	HAL_I2C_Mem_Write(&hi2c1, 0x78, 0x00, I2C_MEMADD_SIZE_8BIT, &Command, 1, HAL_MAX_DELAY);
 }
 
 /**
@@ -89,11 +22,7 @@ void OLED_WriteCommand(uint8_t Command)
   */
 void OLED_WriteData(uint8_t Data)
 {
-	OLED_I2C_Start();
-	OLED_I2C_SendByte(0x78);		//从机地址
-	OLED_I2C_SendByte(0x40);		//写数据
-	OLED_I2C_SendByte(Data);
-	OLED_I2C_Stop();
+	HAL_I2C_Mem_Write(&hi2c1, 0x78, 0x40, I2C_MEMADD_SIZE_8BIT, &Data, 1, HAL_MAX_DELAY);
 }
 
 /**
@@ -280,8 +209,6 @@ void OLED_Init(void)
 		for (j = 0; j < 1000; j++);
 	}
 	
-	OLED_I2C_Init();			//端口初始化
-	
 	OLED_WriteCommand(0xAE);	//关闭显示
 	
 	OLED_WriteCommand(0xD5);	//设置显示时钟分频比/振荡器频率
@@ -334,11 +261,3 @@ int OLED_Printf(uint8_t Line, uint8_t Column, const char *Format, ...)
 	return 0;
 }
 
-void OLED_ShowAngle(uint8_t Line, char *Name, float Angle)
-{
-    uint16_t Angle_Int = (uint16_t)(Angle * 10);
-    OLED_ShowString(Line, 1, Name);
-    OLED_ShowString(Line, 7,"=     .");
-    OLED_ShowSignedNum(Line, 9, Angle_Int / 10, 3);
-    OLED_ShowNum(Line, 14, Angle_Int % 10, 1);
-}
