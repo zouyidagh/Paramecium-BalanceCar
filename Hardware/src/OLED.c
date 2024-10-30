@@ -15,7 +15,7 @@ static uint8_t CurrentY, CurrentX;
   */
 void OLED_WriteCommand(uint8_t Command)
 {
-	HAL_I2C_Mem_Write(&hi2c1, 0x78, 0x00, I2C_MEMADD_SIZE_8BIT, &Command, 1, HAL_MAX_DELAY);
+	HAL_I2C_Mem_Write(&hi2c1, 0x78, 0x00, I2C_MEMADD_SIZE_8BIT, &Command, 1, 0x05);
 }
 
 /**
@@ -25,7 +25,7 @@ void OLED_WriteCommand(uint8_t Command)
   */
 void OLED_WriteData(uint8_t Data)
 {
-	HAL_I2C_Mem_Write(&hi2c1, 0x78, 0x40, I2C_MEMADD_SIZE_8BIT, &Data, 1, HAL_MAX_DELAY);
+	HAL_I2C_Mem_Write(&hi2c1, 0x78, 0x40, I2C_MEMADD_SIZE_8BIT, &Data, 1, 0x05);
 	OLED_Buffer[CurrentY][CurrentX] = Data;
 	CurrentX++;
 	CurrentX %= 128;	//超出范围则回到起始位置
