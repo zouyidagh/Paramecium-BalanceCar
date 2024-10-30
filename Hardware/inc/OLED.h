@@ -11,5 +11,6 @@ void OLED_ShowHexNum(uint8_t Line, uint8_t Column, uint32_t Number, uint8_t Leng
 void OLED_ShowBinNum(uint8_t Line, uint8_t Column, uint32_t Number, uint8_t Length);
 void OLED_Printf(uint8_t Line, uint8_t Column, const char *Format, ...);
 void OLED_ShowAngle(uint8_t Line, char *Name, float Angle);
+void OLED_InvertLine(uint8_t Line);
 
 #endif

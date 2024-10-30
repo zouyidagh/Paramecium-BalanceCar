@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+static uint8_t OLED_Buffer[8][128];
+static uint8_t CurrentY, CurrentX;
+
 /**
   * @brief  OLED写命令
   * @param  Command 要写入的命令
@@ -23,6 +26,9 @@ void OLED_WriteCommand(uint8_t Command)
 void OLED_WriteData(uint8_t Data)
 {
 	HAL_I2C_Mem_Write(&hi2c1, 0x78, 0x40, I2C_MEMADD_SIZE_8BIT, &Data, 1, HAL_MAX_DELAY);
+	OLED_Buffer[CurrentY][CurrentX] = Data;
+	CurrentX++;
+	CurrentX %= 128;	//超出范围则回到起始位置
 }
 
 /**
@@ -36,6 +42,8 @@ void OLED_SetCursor(uint8_t Y, uint8_t X)
 	OLED_WriteCommand(0xB0 | Y);					//设置Y位置
 	OLED_WriteCommand(0x10 | ((X & 0xF0) >> 4));	//设置X位置高4位
 	OLED_WriteCommand(0x00 | (X & 0x0F));			//设置X位置低4位
+	CurrentY = Y;
+	CurrentX = X;
 }
 
 /**
@@ -259,5 +267,27 @@ int OLED_Printf(uint8_t Line, uint8_t Column, const char *Format, ...)
     va_end(Args);
 	OLED_ShowString(Line, Column, Buffer);
 	return 0;
+}
+
+/**
+ * @brief OLED反转指定行
+ * @param Line 行号，范围：1~4
+ * @retval 无
+ */
+void OLED_InvertLine(uint8_t Line)
+{
+    uint8_t X;
+    if (Line < 1 || Line > 4)
+        return;	//行号错误
+    uint8_t Page = (Line - 1) * 2;
+    for (uint8_t i = 0; i < 2; i++)
+    {
+        OLED_SetCursor(Page + i, 0);
+        for (X = 0; X < 128; X++)
+        {
+            OLED_Buffer[Page + i][X] ^= 0xFF;
+            OLED_WriteData(OLED_Buffer[Page + i][X]);
+        }
+    }
 }
 
