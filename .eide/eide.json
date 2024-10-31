@@ -38,8 +38,25 @@
                   },
                   {
                     "path": "Core/Src/stm32f1xx_hal_msp.c"
+                  },
+                  {
+                    "path": "Core/Src/i2c.c"
                   }
                 ],
+                "folders": []
+              },
+              {
+                "name": "Hardware",
+                "files": [
+                  {
+                    "path": "Hardware/src/OLED.c"
+                  }
+                ],
+                "folders": []
+              },
+              {
+                "name": "System",
+                "files": [],
                 "folders": []
               }
             ]
@@ -91,6 +108,9 @@
               },
               {
                 "path": "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c"
+              },
+              {
+                "path": "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c"
               }
             ],
             "folders": []
@@ -109,156 +129,87 @@
     ]
   },
   "outDir": "build",
-  "deviceName": null,
-  "packDir": null,
+  "deviceName": "STM32F103C8",
+  "packDir": ".pack/Keil/STM32F1xx_DFP.2.2.0",
   "miscInfo": {
     "uid": "eccf4eca7b955f9b4400f297cf72616f"
   },
   "targets": {
     "Paramecium-BalanceCar": {
       "excludeList": [],
-      "toolchain": "AC5",
+      "toolchain": "AC6",
       "compileConfig": {
         "cpuType": "Cortex-M3",
         "floatingPointHardware": "none",
-        "scatterFilePath": "",
         "useCustomScatterFile": false,
+        "scatterFilePath": "<YOUR_SCATTER_FILE>.sct",
         "storageLayout": {
           "RAM": [
             {
-              "tag": "RAM",
-              "id": 1,
-              "mem": {
-                "startAddr": "0x0",
-                "size": "0x0"
-              },
-              "isChecked": false,
-              "noInit": false
-            },
-            {
-              "tag": "RAM",
-              "id": 2,
-              "mem": {
-                "startAddr": "0x0",
-                "size": "0x0"
-              },
-              "isChecked": false,
-              "noInit": false
-            },
-            {
-              "tag": "RAM",
-              "id": 3,
-              "mem": {
-                "startAddr": "0x0",
-                "size": "0x0"
-              },
-              "isChecked": false,
-              "noInit": false
-            },
-            {
               "tag": "IRAM",
               "id": 1,
               "mem": {
-                "startAddr": "0x0",
-                "size": "0x0"
+                "startAddr": "0x20000000",
+                "size": "0x5000"
               },
               "isChecked": true,
-              "noInit": false
-            },
-            {
-              "tag": "IRAM",
-              "id": 2,
-              "mem": {
-                "startAddr": "0x0",
-                "size": "0x0"
-              },
-              "isChecked": false,
               "noInit": false
             }
           ],
           "ROM": [
             {
-              "tag": "ROM",
-              "id": 1,
-              "mem": {
-                "startAddr": "0x0",
-                "size": "0x0"
-              },
-              "isChecked": false,
-              "isStartup": false
-            },
-            {
-              "tag": "ROM",
-              "id": 2,
-              "mem": {
-                "startAddr": "0x0",
-                "size": "0x0"
-              },
-              "isChecked": false,
-              "isStartup": false
-            },
-            {
-              "tag": "ROM",
-              "id": 3,
-              "mem": {
-                "startAddr": "0x0",
-                "size": "0x0"
-              },
-              "isChecked": false,
-              "isStartup": false
-            },
-            {
               "tag": "IROM",
               "id": 1,
               "mem": {
-                "startAddr": "",
-                "size": ""
+                "startAddr": "0x08000000",
+                "size": "0x10000"
               },
               "isChecked": true,
               "isStartup": true
-            },
-            {
-              "tag": "IROM",
-              "id": 2,
-              "mem": {
-                "startAddr": "0x0",
-                "size": "0x0"
-              },
-              "isChecked": true,
-              "isStartup": false
             }
           ]
         },
         "options": "null"
       },
-      "uploader": "JLink",
+      "uploader": "OpenOCD",
       "uploadConfig": {
         "bin": "",
-        "baseAddr": "",
-        "cpuInfo": {
-          "vendor": "null",
-          "cpuName": "null"
-        },
-        "proType": 1,
-        "speed": 8000,
-        "otherCmds": ""
+        "target": "stm32f1x",
+        "interface": "stlink",
+        "baseAddr": "0x08000000"
       },
-      "uploadConfigMap": {},
+      "uploadConfigMap": {
+        "JLink": {
+          "bin": "",
+          "baseAddr": "",
+          "cpuInfo": {
+            "vendor": "null",
+            "cpuName": "null"
+          },
+          "proType": 1,
+          "speed": 8000,
+          "otherCmds": ""
+        }
+      },
       "custom_dep": {
         "name": "default",
         "incList": [
+          ".",
           "Core/Inc",
           "Drivers/STM32F1xx_HAL_Driver/Inc",
           "Drivers/STM32F1xx_HAL_Driver/Inc/Legacy",
           "Drivers/CMSIS/Device/ST/STM32F1xx/Include",
           "Drivers/CMSIS/Include",
           ".cmsis/include",
-          "MDK-ARM/RTE/_Paramecium-BalanceCar"
+          "MDK-ARM/RTE/_Paramecium-BalanceCar",
+          "Hardware/inc",
+          "System/inc"
         ],
         "libList": [],
         "defineList": [
           "USE_HAL_DRIVER",
-          "STM32F103xB"
+          "STM32F103xB",
+          "STM32F10X_MD"
         ]
       },
       "builderOptions": {
@@ -284,6 +235,28 @@
             "xo-base": "",
             "ro-base": "",
             "rw-base": ""
+          }
+        },
+        "AC6": {
+          "version": 3,
+          "beforeBuildTasks": [],
+          "afterBuildTasks": [],
+          "global": {
+            "use-microLIB": true,
+            "output-debug-info": "enable"
+          },
+          "c/cpp-compiler": {
+            "optimization": "level-0",
+            "language-c": "c99",
+            "language-cpp": "c++11",
+            "warnings": "ac5-like-warnings"
+          },
+          "asm-compiler": {
+            "$use": "asm-auto"
+          },
+          "linker": {
+            "output-format": "elf",
+            "misc-controls": "--diag_suppress=L6329"
           }
         }
       }
