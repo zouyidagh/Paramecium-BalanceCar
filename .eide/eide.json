@@ -52,7 +52,23 @@
                     "path": "Hardware/src/OLED.c"
                   }
                 ],
-                "folders": []
+                "folders": [
+                  {
+                    "name": "MPU6050",
+                    "files": [
+                      {
+                        "path": "Hardware/src/inv_mpu.c"
+                      },
+                      {
+                        "path": "Hardware/src/inv_mpu_dmp_motion_driver.c"
+                      },
+                      {
+                        "path": "Hardware/src/MPU6050.c"
+                      }
+                    ],
+                    "folders": []
+                  }
+                ]
               },
               {
                 "name": "System",
