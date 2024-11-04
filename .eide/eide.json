@@ -72,7 +72,11 @@
               },
               {
                 "name": "System",
-                "files": [],
+                "files": [
+                  {
+                    "path": "System/src/software_i2c.c"
+                  }
+                ],
                 "folders": []
               }
             ]
