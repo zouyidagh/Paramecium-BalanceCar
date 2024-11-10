@@ -37,12 +37,12 @@
  * min(int a, int b)
  */
 #if defined STM32_MPU6050
-#include "i2c.h"
+#include "software_i2c.h"
 
 #define i2c_write(devaddr, regaddr, size, pdata)   \
-		HAL_I2C_Mem_Write(&hi2c1, (devaddr<<1), regaddr, I2C_MEMADD_SIZE_8BIT, pdata, size, 0x05)
+		SoftW_I2C_Mem_Write((devaddr<<1), regaddr, pdata, size)
 #define i2c_read(devaddr, regaddr, size, pdata)		\
-		HAL_I2C_Mem_Read(&hi2c1, (devaddr<<1), regaddr, I2C_MEMADD_SIZE_8BIT, pdata, size, 0x05)
+		SoftW_I2C_Mem_Read((devaddr<<1), regaddr, pdata, size)
 #define delay_ms(ms)   HAL_Delay(ms)
 #define get_ms(p)      do{*p = HAL_GetTick();}while(0)
 //static inline int reg_int_cb(struct int_param_s *int_param)
