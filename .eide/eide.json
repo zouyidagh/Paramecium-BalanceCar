@@ -34,13 +34,19 @@
                     "path": "Core/Src/gpio.c"
                   },
                   {
+                    "path": "Core/Src/freertos.c"
+                  },
+                  {
+                    "path": "Core/Src/i2c.c"
+                  },
+                  {
                     "path": "Core/Src/stm32f1xx_it.c"
                   },
                   {
                     "path": "Core/Src/stm32f1xx_hal_msp.c"
                   },
                   {
-                    "path": "Core/Src/i2c.c"
+                    "path": "Core/Src/stm32f1xx_hal_timebase_tim.c"
                   }
                 ],
                 "folders": []
@@ -94,12 +100,6 @@
                 "path": "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c"
               },
               {
-                "path": "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c"
-              },
-              {
-                "path": "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c"
-              },
-              {
                 "path": "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c"
               },
               {
@@ -131,6 +131,12 @@
               },
               {
                 "path": "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c"
+              },
+              {
+                "path": "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c"
+              },
+              {
+                "path": "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c"
               }
             ],
             "folders": []
@@ -140,6 +146,53 @@
             "files": [
               {
                 "path": "Core/Src/system_stm32f1xx.c"
+              }
+            ],
+            "folders": []
+          }
+        ]
+      },
+      {
+        "name": "::CMSIS",
+        "files": [],
+        "folders": []
+      },
+      {
+        "name": "Middlewares",
+        "files": [],
+        "folders": [
+          {
+            "name": "FreeRTOS",
+            "files": [
+              {
+                "path": "Middlewares/Third_Party/FreeRTOS/Source/croutine.c"
+              },
+              {
+                "path": "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c"
+              },
+              {
+                "path": "Middlewares/Third_Party/FreeRTOS/Source/list.c"
+              },
+              {
+                "path": "Middlewares/Third_Party/FreeRTOS/Source/queue.c"
+              },
+              {
+                "path": "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c"
+              },
+              {
+                "path": "Middlewares/Third_Party/FreeRTOS/Source/tasks.c"
+              },
+              {
+                "path": "Middlewares/Third_Party/FreeRTOS/Source/timers.c"
+              },
+              {
+                "path": "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c"
+              },
+              {
+                "path": "Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c"
+              },
+              {
+                "path": "Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3/port.c"
               }
             ],
             "folders": []
@@ -157,12 +210,12 @@
   "targets": {
     "Paramecium-BalanceCar": {
       "excludeList": [],
-      "toolchain": "AC6",
+      "toolchain": "AC5",
       "compileConfig": {
         "cpuType": "Cortex-M3",
         "floatingPointHardware": "none",
         "useCustomScatterFile": false,
-        "scatterFilePath": "<YOUR_SCATTER_FILE>.sct",
+        "scatterFilePath": "",
         "storageLayout": {
           "RAM": [
             {
@@ -220,7 +273,9 @@
           "Drivers/STM32F1xx_HAL_Driver/Inc/Legacy",
           "Drivers/CMSIS/Device/ST/STM32F1xx/Include",
           "Drivers/CMSIS/Include",
-          ".cmsis/include",
+          "Middlewares/Third_Party/FreeRTOS/Source/include",
+          "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2",
+          "Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3",
           "MDK-ARM/RTE/_Paramecium-BalanceCar",
           "Hardware/inc",
           "System/inc"
@@ -238,7 +293,7 @@
           "beforeBuildTasks": [],
           "afterBuildTasks": [],
           "global": {
-            "use-microLIB": false,
+            "use-microLIB": true,
             "output-debug-info": "enable"
           },
           "c/cpp-compiler": {
@@ -251,32 +306,7 @@
           },
           "asm-compiler": {},
           "linker": {
-            "output-format": "elf",
-            "xo-base": "",
-            "ro-base": "",
-            "rw-base": ""
-          }
-        },
-        "AC6": {
-          "version": 3,
-          "beforeBuildTasks": [],
-          "afterBuildTasks": [],
-          "global": {
-            "use-microLIB": true,
-            "output-debug-info": "enable"
-          },
-          "c/cpp-compiler": {
-            "optimization": "level-0",
-            "language-c": "c99",
-            "language-cpp": "c++11",
-            "warnings": "ac5-like-warnings"
-          },
-          "asm-compiler": {
-            "$use": "asm-auto"
-          },
-          "linker": {
-            "output-format": "elf",
-            "misc-controls": "--diag_suppress=L6329"
+            "output-format": "elf"
           }
         }
       }
