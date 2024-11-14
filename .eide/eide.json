@@ -56,6 +56,9 @@
                 "files": [
                   {
                     "path": "Hardware/src/OLED.c"
+                  },
+                  {
+                    "path": "Hardware/src/ps2.c"
                   }
                 ],
                 "folders": [
@@ -151,11 +154,6 @@
             "folders": []
           }
         ]
-      },
-      {
-        "name": "::CMSIS",
-        "files": [],
-        "folders": []
       },
       {
         "name": "Middlewares",
