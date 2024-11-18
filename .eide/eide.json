@@ -84,6 +84,9 @@
                 "files": [
                   {
                     "path": "System/src/software_i2c.c"
+                  },
+                  {
+                    "path": "System/src/delayus.c"
                   }
                 ],
                 "folders": []
