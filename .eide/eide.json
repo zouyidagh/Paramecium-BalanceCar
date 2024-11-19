@@ -47,6 +47,9 @@
                   },
                   {
                     "path": "Core/Src/stm32f1xx_hal_timebase_tim.c"
+                  },
+                  {
+                    "path": "Core/Src/tim.c"
                   }
                 ],
                 "folders": []
@@ -65,9 +68,6 @@
                   },
                   {
                     "path": "Hardware/src/motor.c"
-                  },
-                  {
-                    "path": "Hardware/src/pid.c"
                   }
                 ],
                 "folders": [
@@ -96,6 +96,9 @@
                   },
                   {
                     "path": "System/src/delayus.c"
+                  },
+                  {
+                    "path": "System/src/pid.c"
                   }
                 ],
                 "folders": []
