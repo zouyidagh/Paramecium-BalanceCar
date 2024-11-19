@@ -59,6 +59,15 @@
                   },
                   {
                     "path": "Hardware/src/ps2.c"
+                  },
+                  {
+                    "path": "Hardware/src/encoder.c"
+                  },
+                  {
+                    "path": "Hardware/src/motor.c"
+                  },
+                  {
+                    "path": "Hardware/src/pid.c"
                   }
                 ],
                 "folders": [
