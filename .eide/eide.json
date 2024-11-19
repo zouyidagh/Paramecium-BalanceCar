@@ -56,6 +56,9 @@
                 "files": [
                   {
                     "path": "Hardware/src/OLED.c"
+                  },
+                  {
+                    "path": "Hardware/src/ps2.c"
                   }
                 ],
                 "folders": [
@@ -81,6 +84,9 @@
                 "files": [
                   {
                     "path": "System/src/software_i2c.c"
+                  },
+                  {
+                    "path": "System/src/delayus.c"
                   }
                 ],
                 "folders": []
@@ -151,11 +157,6 @@
             "folders": []
           }
         ]
-      },
-      {
-        "name": "::CMSIS",
-        "files": [],
-        "folders": []
       },
       {
         "name": "Middlewares",
