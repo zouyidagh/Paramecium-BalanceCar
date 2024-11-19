@@ -102,6 +102,24 @@
                   }
                 ],
                 "folders": []
+              },
+              {
+                "name": "Task",
+                "files": [
+                  {
+                    "path": "Task/Src/chassis_task.c"
+                  },
+                  {
+                    "path": "Task/Src/mpu6050_task.c"
+                  },
+                  {
+                    "path": "Task/Src/oled_task.c"
+                  },
+                  {
+                    "path": "Task/Src/ps2_task.c"
+                  }
+                ],
+                "folders": []
               }
             ]
           }
@@ -222,7 +240,10 @@
   },
   "targets": {
     "Paramecium-BalanceCar": {
-      "excludeList": [],
+      "excludeList": [
+        "<virtual_root>/Application/User/System/pid.c",
+        "<virtual_root>/Application/User/Hardware/motor.c"
+      ],
       "toolchain": "AC5",
       "compileConfig": {
         "cpuType": "Cortex-M3",
@@ -291,7 +312,8 @@
           "Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3",
           "MDK-ARM/RTE/_Paramecium-BalanceCar",
           "Hardware/inc",
-          "System/inc"
+          "System/inc",
+          "Task/Inc"
         ],
         "libList": [],
         "defineList": [
