@@ -1,9 +1,11 @@
 #ifndef __MPU6050_TASK_H
 #define __MPjson6050_TASK_H
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "main.h"
-#include "cmsis_os.h"
+typedef struct
+{
+    float pitch;
+    float roll;
+    float yaw;
+} MPU6050_Data_t;
 
 #endif  // __MPU6050_TASK_H

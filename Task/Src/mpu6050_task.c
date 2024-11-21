@@ -1,18 +1,19 @@
+#include "main.h"
 #include "mpu6050_task.h"
 #include "MPU6050.h"
+#include "FreeRTOS.h"
 #include "cmsis_os.h"
+#include "task.h"
 #include "oled_task.h"
+#include "queue.h"
 
 extern osMessageQueueId_t oledDisplayQueueHandle;
+extern osMessageQueueId_t mpu6050DataQueueHandle;
 
 void mpu6050Task(void *argument)
 {
     int ErrorCode;
-    struct MPU6050_Data{
-        float pitch;
-        float roll;
-        float yaw;
-    } data;
+    MPU6050_Data_t data;
     OLED_Message_t msg;
     
     ErrorCode = MPU6050_DMP_Init();
@@ -66,20 +67,17 @@ void mpu6050Task(void *argument)
     {
         if(MPU6050_DMP_Get_Data(&data.pitch, &data.roll, &data.yaw))
         {
+            xQueueOverwrite((QueueHandle_t)mpu6050DataQueueHandle, &data);
+
             msg.command = printf;
+            msg.Column = 1;
             
             msg.Line = 1;
-            msg.Column = 1;
-            msg.Data.Format = "pitch: %.1f   ";
-            msg.Format_float_value = data.pitch;
-            osMessageQueuePut(oledDisplayQueueHandle, &msg, 0, 0);
-            
-            msg.Line = 2;
             msg.Data.Format = "roll: %.1f   ";
             msg.Format_float_value = data.roll;
             osMessageQueuePut(oledDisplayQueueHandle, &msg, 0, 0);
             
-            msg.Line = 3;
+            msg.Line = 2;
             msg.Data.Format = "yaw: %.1f   ";
             msg.Format_float_value = data.yaw;
             osMessageQueuePut(oledDisplayQueueHandle, &msg, 0, 0);

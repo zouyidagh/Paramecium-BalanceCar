@@ -26,6 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "oled_task.h"
+#include "mpu6050_task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -101,6 +102,11 @@ osMessageQueueId_t oledDisplayQueueHandle;
 const osMessageQueueAttr_t oledDisplayQueue_attributes = {
   .name = "oledDisplayQueue"
 };
+/* Definitions for mpu6050DataQueue */
+osMessageQueueId_t mpu6050DataQueueHandle;
+const osMessageQueueAttr_t mpu6050DataQueue_attributes = {
+  .name = "mpu6050DataQueue"
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -139,6 +145,9 @@ void MX_FREERTOS_Init(void) {
   /* Create the queue(s) */
   /* creation of oledDisplayQueue */
   oledDisplayQueueHandle = osMessageQueueNew (8, sizeof(OLED_Message_t), &oledDisplayQueue_attributes);
+
+  /* creation of mpu6050DataQueue */
+  mpu6050DataQueueHandle = osMessageQueueNew (1, sizeof(MPU6050_Data_t), &mpu6050DataQueue_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
