@@ -1,5 +1,9 @@
 #include "mpu6050_task.h"
 #include "MPU6050.h"
+#include "cmsis_os.h"
+#include "oled_task.h"
+
+extern osMessageQueueId_t oledDisplayQueueHandle;
 
 void mpu6050Task(void *argument)
 {
@@ -9,42 +13,76 @@ void mpu6050Task(void *argument)
         float roll;
         float yaw;
     } data;
-    // 初始化MPU6050
-    // OLED_Init();
-	ErrorCode = MPU6050_DMP_Init();
-    // 如果初始化失败，显示错误信息
-	if(ErrorCode != 0)
-	{
-    // OLED_Printf(1,1,"DMP Init ERR %d", ErrorCode);
-		while(ErrorCode)
-		{
-      switch (ErrorCode)
-      {
-        case -1:
-        //   OLED_ShowString(2,1,"MPU6050");
-        //   OLED_ShowString(3,1,"Disconnected");
-          break;
-        case -9:
-        //   OLED_ShowString(2,1,"Sensor Not Level");
-          break;
-        default:
-        //   OLED_ShowString(2,1,"Unknown Error");
-          break;
-      }
-			vTaskDelay(500);
-			ErrorCode = MPU6050_DMP_Init();
-		}
-    // OLED_Clear();
-	}
+    OLED_Message_t msg;
+    
+    ErrorCode = MPU6050_DMP_Init();
+    if(ErrorCode != 0)
+    {
+        msg.command = printf;
+        msg.Line = 1;
+        msg.Column = 1;
+        msg.Data.Format = "DMP Init ERR %.0f";
+        msg.Format_float_value = ErrorCode;
+        osMessageQueuePut(oledDisplayQueueHandle, &msg, 0, 0);
+        
+        while(ErrorCode)
+        {
+            switch (ErrorCode)
+            {
+                case -1:
+                    msg.command = showString;
+                    msg.Line = 2;
+                    msg.Column = 1;
+                    msg.Data.String = "MPU6050";
+                    osMessageQueuePut(oledDisplayQueueHandle, &msg, 0, 0);
+                    
+                    msg.Line = 3;
+                    msg.Data.String = "Disconnected";
+                    osMessageQueuePut(oledDisplayQueueHandle, &msg, 0, 0);
+                    break;
+                case -9:
+                    msg.command = showString;
+                    msg.Line = 2;
+                    msg.Column = 1;
+                    msg.Data.String = "Sensor Not Level";
+                    osMessageQueuePut(oledDisplayQueueHandle, &msg, 0, 0);
+                    break;
+                default:
+                    msg.command = showString;
+                    msg.Line = 2;
+                    msg.Column = 1;
+                    msg.Data.String = "Unknown Error";
+                    osMessageQueuePut(oledDisplayQueueHandle, &msg, 0, 0);
+                    break;
+            }
+            vTaskDelay(500);
+            ErrorCode = MPU6050_DMP_Init();
+        }
+        msg.command = clear;
+        osMessageQueuePut(oledDisplayQueueHandle, &msg, 0, 0);
+    }
+    
     while(1)
     {
-        // 轮询MPU6050数据
         if(MPU6050_DMP_Get_Data(&data.pitch, &data.roll, &data.yaw))
         {
-            // 显示数据
-            // OLED_Printf(1, 1, "pitch: %.1f   ", data.pitch);
-            // OLED_Printf(2, 1, "roll: %.1f   ", data.roll);
-            // OLED_Printf(3, 1, "yaw: %.1f   ", data.yaw);
+            msg.command = printf;
+            
+            msg.Line = 1;
+            msg.Column = 1;
+            msg.Data.Format = "pitch: %.1f   ";
+            msg.Format_float_value = data.pitch;
+            osMessageQueuePut(oledDisplayQueueHandle, &msg, 0, 0);
+            
+            msg.Line = 2;
+            msg.Data.Format = "roll: %.1f   ";
+            msg.Format_float_value = data.roll;
+            osMessageQueuePut(oledDisplayQueueHandle, &msg, 0, 0);
+            
+            msg.Line = 3;
+            msg.Data.Format = "yaw: %.1f   ";
+            msg.Format_float_value = data.yaw;
+            osMessageQueuePut(oledDisplayQueueHandle, &msg, 0, 0);
         }
     }
 }

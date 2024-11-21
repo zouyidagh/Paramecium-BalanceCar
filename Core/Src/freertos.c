@@ -25,7 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "oled_task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -96,6 +96,11 @@ const osThreadAttr_t ps2Controller_attributes = {
   .stack_size = sizeof(ps2ControllerTaBuffer),
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for oledDisplayQueue */
+osMessageQueueId_t oledDisplayQueueHandle;
+const osMessageQueueAttr_t oledDisplayQueue_attributes = {
+  .name = "oledDisplayQueue"
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -130,6 +135,10 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
+
+  /* Create the queue(s) */
+  /* creation of oledDisplayQueue */
+  oledDisplayQueueHandle = osMessageQueueNew (8, sizeof(OLED_Message_t), &oledDisplayQueue_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
