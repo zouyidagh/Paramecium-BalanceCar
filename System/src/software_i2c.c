@@ -1,9 +1,9 @@
 #include "software_i2c.h"
 
 /*使用GPIO引脚选择*/
-#define USE_GPIOx GPIOB
-#define USE_SCL_PIN GPIO_PIN_12
-#define USE_SDA_PIN GPIO_PIN_13
+#define USE_GPIOx MPU_SDA_GPIO_Port
+#define USE_SCL_PIN MPU_SCL_Pin
+#define USE_SDA_PIN MPU_SDA_Pin
 
 #ifdef USE_STDPERIPH_DRIVER
     /*引脚配置*/

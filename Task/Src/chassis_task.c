@@ -5,5 +5,6 @@ void chassisControlTask(void *argument)
 {
     while(1)
     {
+        vTaskDelay(1000);
     }
 }
