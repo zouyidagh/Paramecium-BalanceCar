@@ -25,8 +25,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "oled_task.h"
+#include "chassis_task.h"
 #include "mpu6050_task.h"
+#include "oled_task.h"
+#include "ps2_task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -107,6 +109,11 @@ osMessageQueueId_t mpu6050DataQueueHandle;
 const osMessageQueueAttr_t mpu6050DataQueue_attributes = {
   .name = "mpu6050DataQueue"
 };
+/* Definitions for ps2DataQueue */
+osMessageQueueId_t ps2DataQueueHandle;
+const osMessageQueueAttr_t ps2DataQueue_attributes = {
+  .name = "ps2DataQueue"
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -148,6 +155,9 @@ void MX_FREERTOS_Init(void) {
 
   /* creation of mpu6050DataQueue */
   mpu6050DataQueueHandle = osMessageQueueNew (1, sizeof(MPU6050_Data_t), &mpu6050DataQueue_attributes);
+
+  /* creation of ps2DataQueue */
+  ps2DataQueueHandle = osMessageQueueNew (1, sizeof(rc_ps2_t *), &ps2DataQueue_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */

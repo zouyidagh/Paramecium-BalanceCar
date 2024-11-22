@@ -75,7 +75,6 @@ typedef __packed struct
 extern uint8_t ps2_buf[];
 extern uint8_t ps2_mode;
 extern rc_ps2_t rc_ps2;
-extern rc_ps2_t rc_ps2;
 
 /*******PS2相关函数声明*******/
 uint8_t ps2_transfer(unsigned char dat);
