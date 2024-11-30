@@ -99,6 +99,9 @@
                   },
                   {
                     "path": "System/src/pid.c"
+                  },
+                  {
+                    "path": "System/src/alg_pid.c"
                   }
                 ],
                 "folders": []
@@ -241,8 +244,7 @@
   "targets": {
     "Paramecium-BalanceCar": {
       "excludeList": [
-        "<virtual_root>/Application/User/System/pid.c",
-        "<virtual_root>/Application/User/Hardware/motor.c"
+        "<virtual_root>/Application/User/System/pid.c"
       ],
       "toolchain": "AC5",
       "compileConfig": {

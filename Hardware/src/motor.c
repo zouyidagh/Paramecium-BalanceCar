@@ -45,11 +45,13 @@ void Limit(int *motoA,int *motoB)
 	if(*motoB>PWM_MAX)*motoB=PWM_MAX;
 	if(*motoB<PWM_MIN)*motoB=PWM_MIN;
 }
-void Stop(float *Med_Jiaodu,float *Jiaodu)
+
+
+void motor_init(void)
 {
-	if(abs((int)(*Jiaodu-*Med_Jiaodu))>60)
-	{
-		Load(0,0);
-		stop=1;
-	}
+	HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_4);
+	HAL_TIM_Encoder_Start(&htim2,TIM_CHANNEL_ALL);
+	HAL_TIM_Encoder_Start(&htim4,TIM_CHANNEL_ALL);
+	Load(0,0);
 }
